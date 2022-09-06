@@ -13,18 +13,14 @@ afterAll(() => {
 });
 
 describe("GET /api/categories", () => {
-  it("should respond with a 200: returns with an array of categories", () => {
-    return request(app)
-      .get("/api/categories")
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.categories).toBeInstanceOf(Array);
-        expect(body.categories).toHaveLength(4);
-        body.categories.forEach((category) => {
-          expect(category).toHaveProperty("slug");
-          expect(category).toHaveProperty("description");
-        });
-      });
+  it("should respond with a 200: returns with an array of categories", async () => {
+    const { body } = await request(app).get("/api/categories").expect(200);
+    expect(body.categories).toBeInstanceOf(Array);
+    expect(body.categories).toHaveLength(4);
+    body.categories.forEach((category) => {
+      expect(category).toHaveProperty("slug");
+      expect(category).toHaveProperty("description");
+    });
   });
   it("should respond with a 404: categories not found", async () => {
     const { body } = await request(app).get("/api/batteries").expect(404);
