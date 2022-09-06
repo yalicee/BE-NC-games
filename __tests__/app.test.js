@@ -26,4 +26,8 @@ describe("GET /api/categories", () => {
         });
       });
   });
+  it("should respond with a 404: categories not found", async () => {
+    const { body } = await request(app).get("/api/batteries").expect(404);
+    expect(body.message).toBe("path not found");
+  });
 });
