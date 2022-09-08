@@ -54,3 +54,16 @@ describe("GET /api/reviews/review_id", () => {
     expect(body.msg).toBe("Bad Request");
   });
 });
+
+describe("GET /api/users", () => {
+  it("should respond with a 200: returns an array of users", async () => {
+    const { body } = await request(app).get("/api/users").expect(200);
+    expect(body.users).toBeInstanceOf(Array);
+    expect(body.users).toHaveLength(4);
+    body.users.forEach((user) => {
+      expect(user).toHaveProperty("username", expect.any(String));
+      expect(user).toHaveProperty("name", expect.any(String));
+      expect(user).toHaveProperty("avatar_url", expect.any(String));
+    });
+  });
+});
