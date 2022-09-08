@@ -24,6 +24,33 @@ describe("GET /api/categories", () => {
   });
   it("should respond with a 404: categories not found", async () => {
     const { body } = await request(app).get("/api/batteries").expect(404);
-    expect(body.message).toBe("path not found");
+    expect(body.msg).toBe("Route Not Found");
+  });
+});
+
+describe("GET /api/reviews/review_id", () => {
+  it("should respond with a 200: returns with a review object", async () => {
+    const reviewObj = {
+      title: "Ultimate Werewolf",
+      designer: "Akihisa Okui",
+      owner: "bainesface",
+      review_img_url:
+        "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+      review_body: "We couldn't find the werewolf!",
+      review_id: 3,
+      category: "social deduction",
+      created_at: expect.any(String),
+      votes: 5,
+    };
+    const { body } = await request(app).get("/api/reviews/3").expect(200);
+    expect(body.review).toEqual(reviewObj);
+  });
+  it("should respond with a 404: return message with review not found", async () => {
+    const { body } = await request(app).get("/api/reviews/123132");
+    expect(body.msg).toBe("Review Not Found");
+  });
+  it("it should resond with a 400: return message with invalid id", async () => {
+    const { body } = await request(app).get("/api/reviews/review1");
+    expect(body.msg).toBe("Bad Request");
   });
 });
